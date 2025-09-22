@@ -5,6 +5,7 @@
 #include <ot/static/logger.hpp>
 #include <ot/utility/utility.hpp>
 #include <ot/exception.hpp>
+#include <unordered_map>
 
 namespace ot::vlog {
 
@@ -28,6 +29,7 @@ struct Module {
   std::vector<std::string> inputs;
   std::vector<std::string> outputs;
   std::vector<Gate> gates;
+  std::unordered_map<std::string, std::string> assigns;
   std::string info() const;
 };
 

@@ -109,6 +109,9 @@ class Timer {
     inline auto num_gates() const;
     inline auto num_tests() const;
     inline auto num_sccs() const;
+    inline const std::list<SCC>& sccs() const {
+      return _sccs;
+    }
     inline auto time_unit() const;
     inline auto power_unit() const;
     inline auto resistance_unit() const;

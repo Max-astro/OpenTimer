@@ -20,7 +20,7 @@ class SCC {
 
     SCC(std::vector<Pin*>&&);
 
-  private:
+  // private:
     
     std::optional<std::list<SCC>::iterator> _satellite;
 

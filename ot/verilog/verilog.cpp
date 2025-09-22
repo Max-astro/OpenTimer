@@ -72,10 +72,10 @@ std::string Module::info() const {
 Module read_verilog(const std::filesystem::path& path) {
 
   Module module;
-  
-  static std::string_view delimiters = "(),:;/#[]{}*\"\\";
+
+  static std::string_view delimiters = "(),:;/#{}*\"\\";
   static std::string_view exceptions = "().;";
-  
+
   auto tokens = tokenize(path, delimiters, exceptions);
 
   //for(const auto& token : tokens) {
@@ -123,9 +123,21 @@ Module read_verilog(const std::filesystem::path& path) {
       while(++itr != end && *itr != ";") {
         module.wires.push_back(std::move(*itr));
       }
-    }
-    else {
-      
+    } else if (*itr == "assign") {
+      ++itr; // skip `assign`
+      std::string dst = *itr;
+      ++itr; // skip dst
+      ++itr; // skip `=`
+      std::string src = *itr;
+      ++itr; // skip src
+      if (*itr != ";") {
+        OT_LOGF("missing ; in assign declaration");
+      }
+
+      // std::cout << "In assign: " << dst << " " << src << "\n";
+      module.assigns.emplace(std::move(src), std::move(dst));
+    } else {
+
       Gate inst;
       inst.cell = std::move(*itr);
 
@@ -159,11 +171,11 @@ Module read_verilog(const std::filesystem::path& path) {
       if(*(++itr) != ";") {
         OT_LOGF("missing ; in instance declaration");
       }
-      
+
       module.gates.push_back(std::move(inst));
     }
   }
-  
+
   return module;
 }
 

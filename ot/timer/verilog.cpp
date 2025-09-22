@@ -60,8 +60,14 @@ void Timer::_verilog(vlog::Module& module) {
     _insert_gate(gate.name, gate.cell);
     for(const auto& [c, n] : gate.cellpin2net) {
       auto& pin = _insert_pin(gate.name + ':' + c);
-      auto& net = _insert_net(n); 
-      _connect_pin(pin, net);
+      auto assign = module.assigns.find(n);
+      if(assign != module.assigns.end()) {
+        auto& net = _insert_net(assign->second); 
+        _connect_pin(pin, net);
+      } else {
+        auto& net = _insert_net(n); 
+        _connect_pin(pin, net);
+      }
     }
   }
 }
