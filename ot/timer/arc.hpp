@@ -44,6 +44,8 @@ class Arc {
     const Pin& from() const;
     const Pin& to() const;
 
+    auto net() const;
+
   private:
 
     Pin& _from;
@@ -87,6 +89,15 @@ inline const Pin& Arc::from() const {
 // Function: to
 inline const Pin& Arc::to() const {
   return _to;
+}
+
+// Function: net
+inline auto Arc::net() const {
+  Net* ptr = nullptr;
+  if (auto ptr = std::get_if<Net*>(&_handle) ) {
+    return *ptr;
+  } 
+  return ptr;
 }
 
 };  // end of namespace ot. -----------------------------------------------------------------------

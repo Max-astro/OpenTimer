@@ -111,12 +111,16 @@ void Path::dump(std::ostream& os) const {
   size_t w3 = 12;
   size_t w4 = 6;
   size_t w5 = 13;
-  size_t W = w1 + w2 + w3 + w4 + w5;
+  size_t wCap = 12;
+  size_t wFanout = 10;
+  size_t W = w1 + w2 + w3 + w4 + w5 + wCap + wFanout;
 
   std::fill_n(std::ostream_iterator<char>(os), W, '-');
   os << '\n'
      << std::setw(w1) << "Type"
      << std::setw(w2) << "Delay"
+     << std::setw(wFanout) << "Fanout"
+     << std::setw(wCap) << "Cap"
      << std::setw(w3) << "Time"
      << std::setw(w4) << "Dir";
   std::fill_n(std::ostream_iterator<char>(os), 2, ' ');
@@ -142,7 +146,24 @@ void Path::dump(std::ostream& os) const {
     os << std::setw(w2);
     if(pi_at) os << p.at - *pi_at;
     else os << p.at;
-    
+
+    {
+      auto net = p.pin.primary_output() ? nullptr : p.pin._fanout.front()->net();
+      
+      if (net) {
+        // Fanout number
+        os << std::setw(wFanout);
+        os << net->num_pins() - 1;
+
+        // Loading capacitance
+        os << std::setw(wCap);
+        float loading = net->_load(split, tran);
+        os << loading;
+      } else {
+        os << std::setw(wFanout + wCap) << "";
+      }
+    }
+
     // arrival time
     os << std::setw(w3) << p.at;
 
@@ -164,7 +185,7 @@ void Path::dump(std::ostream& os) const {
   }
 
   os << std::setw(w1) << "arrival" 
-     << std::setw(w2+w3) << at;
+     << std::setw(w2+w3+wFanout+wCap) << at;
   std::fill_n(std::ostream_iterator<char>(os), w4 + 2, ' ');
   os << "data arrival time" << '\n'; 
 

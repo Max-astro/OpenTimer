@@ -145,6 +145,7 @@ class Net {
 
   friend class Timer;
   friend class Arc;
+  friend class Path;
   friend class Pin;
   
   struct EmptyRct {
