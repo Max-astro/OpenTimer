@@ -129,6 +129,10 @@ class Timer {
     inline const auto& tests() const;
     inline const auto& arcs() const;
 
+    const TimingData<std::optional<Celllib>, MAX_SPLIT> &celllib() const {
+      return _celllib;
+    }
+
   private:
 
     mutable std::shared_mutex _mutex;
