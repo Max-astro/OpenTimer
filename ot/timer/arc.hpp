@@ -45,6 +45,10 @@ class Arc {
     const Pin& to() const;
 
     auto net() const;
+  
+    auto delay(Split el, Tran irf, Tran orf) const {
+      return _delay[el][irf][orf];
+    }
 
   private:
 

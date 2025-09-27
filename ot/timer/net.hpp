@@ -161,6 +161,9 @@ class Net {
     inline size_t num_pins() const;
 
     inline const Rct* rct() const;
+    
+    inline Pin* driver() const { return _root; }
+    inline const std::list<Pin*>& pins() const { return _pins; }
 
   private:
 

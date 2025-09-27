@@ -276,8 +276,11 @@ Timer& Timer::connect_pin(std::string pin, std::string net) {
   auto op = _taskflow.emplace([this, pin=std::move(pin), net=std::move(net)] () {
     auto p = _pins.find(pin);
     auto n = _nets.find(net);
-    OT_LOGE_RIF(p==_pins.end() || n == _nets.end(),
-      "can't connect pin ", pin,  " to net ", net, " (pin/net not found)"
+    OT_LOGE_RIF(p==_pins.end(),
+      "can't connect pin ", pin,  " to net ", net, " (pin not found)"
+    )
+    OT_LOGE_RIF(n == _nets.end(),
+      "can't connect pin ", pin,  " to net ", net, " (net not found)"
     )
     _connect_pin(p->second, n->second);
   });

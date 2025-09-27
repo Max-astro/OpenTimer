@@ -25,6 +25,8 @@ class Gate {
 
     const std::string& cell_name() const;
 
+    inline const Cell* cell(Split m) const { return _cell[m]; }
+
   private:
 
     std::string _name;

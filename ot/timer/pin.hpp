@@ -150,6 +150,9 @@ class Pin {
     inline size_t num_fanins() const;
     inline size_t idx() const;
 
+    inline auto fanins() const { return _fanin; }
+    inline auto fanouts() const { return _fanout; }
+
   private:
 
     std::string _name;
