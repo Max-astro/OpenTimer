@@ -491,7 +491,14 @@ void Timer::_dump_verilog(std::ostream& os, const std::string& name) const {
   for(const auto& gate : _gates) {
     os << gate.second._cell[MIN]->name << ' ' << gate.first << " (";
 
+    bool first = true;
     for(const auto& pin : gate.second._pins) {
+      if (first) {
+        first = false;
+      } else {
+        os << ", ";
+      }
+      
       if(pin->_net) {
         os << " ." << pin->cellpin(MIN)->name << '(' << pin->_net->_name << ')';
       }
